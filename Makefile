@@ -28,14 +28,15 @@ endif
 		echo "go get github.com/tools/godep"; \
 		go get github.com/tools/godep; \
 	}
-
-	@type gox >/dev/null 2>&1 || { \
-		echo "godep go install github.com/mitchellh/gox"; \
-		$(GODEP) godep get github.com/mitchellh/gox; \
-		$(GODEP) godep go install github.com/mitchellh/gox; \
+	@type godep >/dev/null 2>&1|| { \
+		echo "godep not found. Is ${GOPATH}/bin in your $$PATH?"; \
+		exit 1; \
 	}
 
-	godep restore
+	@type gox >/dev/null 2>&1 || { \
+		echo "go get github.com/mitchellh/gox"; \
+		go get github.com/mitchellh/gox; \
+	}
 
 linux64:
 	$(GODEP) gox -osarch="linux/amd64" -output="image_builder/stacker"
