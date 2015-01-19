@@ -23,12 +23,6 @@ type ConfStore struct {
 	stopper  chan bool
 }
 
-// File represents a single config file
-type File struct {
-	Path string
-	MD5  string
-}
-
 // NewConfStore returns a new file ConfStore object
 func NewConfStore() engine.ConfStore {
 	return &ConfStore{}
