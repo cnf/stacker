@@ -108,7 +108,10 @@ func (e *Engine) Start() error {
 		e.ch = make(chan *Command, chlen)
 	}
 	e.stopper = make(chan bool)
-	go e.ticker()
+	// TODO: delete this, for now only run for debugging.
+	if glog.V(3) {
+		go e.ticker()
+	}
 	go e.runner()
 
 	if e.ContainerRuntime == nil {
