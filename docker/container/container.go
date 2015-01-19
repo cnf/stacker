@@ -410,6 +410,9 @@ func (c *Container) buildDependencies() error {
 	for i := range c.Config.Dependencies {
 		dlist[c.Config.Dependencies[i]] = false
 	}
+	for i := range c.Config.VolumesFrom {
+		dlist[c.Config.VolumesFrom[i]] = false
+	}
 	c.dependencies = dlist
 	return nil
 }
@@ -611,15 +614,16 @@ func (c *Container) updateDockerState() error {
 	if glog.V(2) {
 		glog.Infof("updating docker state for container '%s'", c.Name)
 	}
-	if c.ID == "" {
-		c.DockerState = nil
-		return nil
+	if c.ID != "" {
+		nc, err := dw.Client.InspectContainer(c.ID)
+		if err == nil {
+			c.DockerState = &nc.State
+			return nil
+		}
+		return err
 	}
-	nc, err := dw.Client.InspectContainer(c.ID)
-	if err == nil {
-		c.DockerState = &nc.State
-		return nil
-	}
+
+	c.DockerState = nil
 	opts := dockerapi.ListContainersOptions{All: true}
 	// dcl, err := dw.Client.ListContainers(opts)
 	dcl, err := dw.Client.ListContainers(opts)
