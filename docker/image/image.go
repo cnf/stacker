@@ -84,7 +84,8 @@ func (i *Image) ensurePresent() error {
 		glog.Infof("making sure image '%s' is present", i.Name)
 	}
 	if err := i.pull(); err != nil {
-		return err
+		// TODO: log, but don't error
+		// return err
 	}
 	dw, err := dockerwrapper.GetObject()
 	if err != nil {
@@ -96,6 +97,7 @@ func (i *Image) ensurePresent() error {
 	}
 	if i.ID != img.ID {
 		glog.Infof("updating ID for image %s", i.Name)
+		i.ID = img.ID
 	}
 	return nil
 }
