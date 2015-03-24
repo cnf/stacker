@@ -45,6 +45,7 @@ type Config struct {
 	DNSSearch   []string `mapstructure:"dns_search" version:"1"`
 	VolumesFrom []string `mapstructure:"volumes_from" version:"1"`
 	Net         string   `mapstructure:"net" version:"1"`
+	SecurityOpt []string `mapstructure:"security_opt" version:"2"`
 
 	// We set these, no override allowed
 	Detach   bool `mapstructure:"-" version:"0" lastversion:"0"`
